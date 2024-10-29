@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Job Zon</title>
+    <link rel="stylesheet" href="{%static 'assets/bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="{%static 'assets/css/bs-theme-overrides.css'%}">
+    <link rel="stylesheet" href="{%static 'assets/css/Footer-Basic-icons.css'%}">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md fixed-top navbar-shrink py-3 navbar-light" id="mainNav">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span style="color: #97144d;font-weight: bold;">Job Zon</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="{%url 'indexr'%}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{%url 'Jobposting'%}">Job Posting</a></li>
+                    {% comment %} <li class="nav-item"><a class="nav-link" href="{%url 'ATS'%}">CV Ranking</a></li> {% endcomment %}
+                    <li class="nav-item"><a class="nav-link " href="{%url 'ALlJobs'%}">Jobs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{%url 'Shortlisted'%}">Shortlisted</a></li>
+                </ul><a class="btn btn-primary shadow" role="button" href="{%url 'index'%}">Log Out</a>
+            </div>
+        </div>
+    </nav>
+    <section class="py-5 mt-5">
+        <form method="post">
+        {% csrf_token %}
+        <form method="post">
+            <div class="card mb-5">
+                <div class="card-body p-sm-5">
+                    <div class="container py-5">
+                        <h2 class="display-6 fw-bold text-center mb-4">Post a Job<span class="underline"></span></h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <input class="form-control" name="jobname" type="text" placeholder="Title" required>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="dobe" class="form-label">Application Last Date</label>
+                                    <input class="form-control" name="dobe" type="date">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="end_time" class="form-label">Total Needed Candidates</label>
+                                    <input class="form-control" name="end_time" type="number">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row" style="padding: 5px;margin-top: 16px;">
+                        <div class="col"><input type="number" name="exp" class="form-control" placeholder="Experience"></div>
+                        <div class="col"><input type="text" name="place" class="form-control" placeholder="Place"></div>
+                    </div>
+                    <div class="row" style="padding: 5px;margin-top: 16px;">
+                        <div class="col"><input type="text" name="edu" class="form-control" placeholder="Required Education"></div>
+                    </div>
+                    <div class="row" style="padding: 5px;">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-check"><input name="TYPE" class="form-check-input" type="radio" value="p" style="border-width: 2px;"><label class="form-check-label" for="formCheck-17">Part Time</label></div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check"><input name="TYPE" class="form-check-input" type="radio" value="f" style="border-width: 2px;"><label class="form-check-label" for="formCheck-18">Full Time</label></div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check"><input name="TYPE" class="form-check-input" type="radio" value="i" style="border-width: 2px;"><label class="form-check-label" for="formCheck-19">Internship</label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding: 5px;">
+                        <div class="col"><input name="sector" type="text" class="form-control" placeholder="Sector"></div>
+                        <div class="col"><input name="openings" type="number" class="form-control" placeholder="Openings"></div>
+                    </div>
+                    <div class="row" style="padding: 5px;">
+                        <div class="col"><input name="creteria1" type="text" class="form-control" placeholder="Criteria 1"></div>
+                        <div class="col"><input name="creteria2" type="text" class="form-control" placeholder="Criteria 2"></div>
+                        <div class="col"><input name="creteria3" type="text" class="form-control" placeholder="Criteria 3"></div>
+                        <div class="col"><input name="creteria4" type="text" class="form-control" placeholder="Criteria 4"></div>
+                        <div class="col"><input name="creteria5" type="text" class="form-control" placeholder="Criteria 5"></div>
+                    </div>
+                    <div class="row" style="padding: 5px;">
+                        <div class="col"><textarea class="form-control" name="about" placeholder="Describe"></textarea></div>
+                    </div>
+                    <div class="row justify-content-center align-items-center" style="padding: 5px;">
+                        <div class="col text-center align-self-center"><button class="btn btn-primary" type="submit">Post</button></div>
+                        <div class="col text-center align-self-center"><button class="btn btn-primary" type="reset">Reset</button></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+        
+    </form>
+    </section>
+    <script src="{%static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
+    <script src="{%static 'assets/js/bs-init.js'%}"></script>
+    <script src="{%static 'assets/js/startup-modern.js'%}"></script>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Job Zon</title>
+    <link rel="stylesheet" href="{%static 'assets/bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="{%static 'assets/css/bs-theme-overrides.css'%}">
+    <link rel="stylesheet" href="{%static 'assets/css/Footer-Basic-icons.css'%}">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md fixed-top navbar-shrink py-3 navbar-light" id="mainNav">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span style="color: #97144d;font-weight: bold;">Job Zon</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    {% if  login %}
+                    <li class="nav-item"><a class="nav-link" href="{%url 'index'%}">Home</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{%url 'index2'%}">Home</a></li>
+                    {% endif %}
+                    <li class="nav-item"><a class="nav-link " href="{%url 'jobs'%}">Job</a></li>
+                    
+                    <li class="nav-item"><a class="nav-link active" href="{%url 'Guidlines'%}">Guidlines</a></li>
+                    <li class="nav-item"><a class="nav-link " href="{%url 'contacts'%}">Contacts</a></li>
+                </ul>{% if  login %}
+                <a class="btn btn-primary shadow" role="button" href="{% url 'signin' %}">Log In</a>
+                {% else %}
+                <a class="btn btn-primary shadow" role="button" href="{% url 'index' %}">Log Out</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <section class="py-5 mt-5">
+        <div class="container py-4 py-xl-5">
+            <div class="row mb-5">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <h2 class="display-6 fw-bold mb-4">Elevating Career&nbsp;&nbsp;<br><span class="underline">Aspirations</span></h2>
+                    <p class="text-muted">How Our AI-Powered App Gets Job Seekers Hired</p>
+                </div>
+            </div>
+            <div class="row gy-4 gy-md-0">
+                <div class="col-md-6 text-center text-md-start d-flex d-sm-flex d-md-flex justify-content-center align-items-center justify-content-md-start align-items-md-center justify-content-xl-center">
+                    <div style="max-width: 350px;">
+                        <p class="text-muted my-4"><br>In the ever-evolving job market, the journey to finding the ideal job can be riddled with complexities. Job seekers need a cutting-edge solution to showcase their skills effectively, while employers seek efficient ways to identify top talents. Enter our AI-powered HR optimization app, a game-changing platform that empowers job seekers and HR professionals alike. By harnessing the potential of AI and LLMs, we have developed an innovative tool that enhances the recruitment process and transforms job seekers' careers. Let's delve into the exceptional features that make our app stand out from the crowd.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div><img class="rounded img-fluid w-100 fit-cover" style="min-height: 300px;" src="{%static 'assets/img/illustrations/startup.svg'%}"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container py-4 py-xl-5">
+            <div class="row gy-4 gy-md-0">
+                <div class="col-md-6 text-center text-md-start d-flex d-sm-flex d-md-flex justify-content-center align-items-center justify-content-md-start align-items-md-center justify-content-xl-center">
+                    <div><img class="rounded img-fluid fit-cover" style="min-height: 300px;" src="{%static 'assets/img/illustrations/presentation.svg'%}" width="800"></div>
+                </div>
+                <div class="col">
+                    <div style="max-width: 450px;">
+                        <h3 class="fw-bold pb-md-4">Unraveling Job&nbsp;<span class="underline">Descriptions</span></h3>
+                        <p class="text-muted py-4 py-md-0">Our app empowers HR professionals with the ability to unravel the intricacies of job descriptions like never before. Using advanced NLP and LLM technologies, the app comprehensively evaluates job postings to ensure accuracy and clarity. Job seekers benefit from crystal-clear expectations, leading to a surge in applications from candidates genuinely interested in the role.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container py-4 py-xl-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="display-6 fw-bold pb-md-4">Insights for&nbsp;<span class="underline">Improvement</span></h3>
+                </div>
+                <div class="col-md-6 pt-4">
+                    <p class="text-muted mb-4">The app takes job description analysis a step further by providing valuable insights to HR professionals. With data-driven recommendations, employers can enhance their job postings, enticing top talents to consider their organization.</p>
+                </div>
+            </div>
+            <div class="row gy-4 gy-md-0">
+                <div class="col-md-6 d-flex d-sm-flex d-md-flex justify-content-center align-items-center justify-content-md-start align-items-md-center justify-content-xl-center">
+                    <div>
+                        <div class="row gy-2 row-cols-1 row-cols-sm-2">
+                            <div class="col-xxl-12 text-center text-md-start">
+                                <div class="d-flex justify-content-center align-items-center justify-content-md-start">
+                                    <h1 class="fw-bold mb-0 ms-2">Empowering Job Seekers</h1>
+                                </div>
+                                <p class="text-muted my-3">Job seekers are at the heart of our app's mission. As they submit their CVs, the app showcases how well their qualifications align with the job requirements. Armed with this knowledge, job seekers can fine-tune their CVs to optimize their chances of success.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 order-first order-md-last">
+                    <div><img class="rounded img-fluid w-100 fit-cover" style="min-height: 300px;" src="{%static 'assets/img/illustrations/teamwork.svg'%}"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container py-4 py-xl-5">
+            <div class="row gy-4 gy-md-0">
+                <div class="col-md-6 text-center text-md-start d-flex d-sm-flex d-md-flex justify-content-center align-items-center justify-content-md-start align-items-md-center justify-content-xl-center">
+                    <div><img class="rounded img-fluid fit-cover" style="min-height: 300px;" src="{%static 'assets/img/illustrations/presentation.svg'%}" width="800"></div>
+                </div>
+                <div class="col">
+                    <div style="max-width: 450px;">
+                        <h3 class="fw-bold pb-md-4">Personalized&nbsp;<span class="underline">Shortlisting</span></h3>
+                        <p class="text-muted py-4 py-md-0">Bid farewell to lengthy and uncertain candidate shortlisting processes. Our AI-driven CV ranking system intelligently sifts through CVs to shortlist candidates whose skills precisely match the job's prerequisites. HR professionals can now focus on engaging with the cream of the crop.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container py-4 py-xl-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="display-6 fw-bold pb-md-4">Revealing the Ideal&nbsp;<span class="underline">Candidates</span></h3>
+                </div>
+                <div class="col-md-6 pt-4">
+                    <p class="text-muted mb-4">Our app goes above and beyond by providing in-depth profiles of shortlisted candidates. HR professionals gain unparalleled insights into candidates' strengths, experiences, and achievements, aiding them in making informed hiring decisions.</p>
+                </div>
+            </div>
+            <div class="row gy-4 gy-md-0">
+                <div class="col-md-6 d-flex d-sm-flex d-md-flex justify-content-center align-items-center justify-content-md-start align-items-md-center justify-content-xl-center">
+                    <div>
+                        <div class="row gy-2 row-cols-1 row-cols-sm-2">
+                            <div class="col-xxl-12 text-center text-md-start">
+                                <div class="d-flex justify-content-center align-items-center justify-content-md-start">
+                                    <h1 class="fw-bold mb-0 ms-2">Time Efficiency and Quality Results</h1>
+                                </div>
+                                <p class="text-muted my-3">By automating critical aspects of the hiring process, our app significantly reduces the time-to-hire. HR professionals can now focus on engaging candidates and assessing their fit, all while maintaining the highest standards of quality and precision.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 order-first order-md-last">
+                    <div><img class="rounded img-fluid w-100 fit-cover" style="min-height: 300px;" src="{%static 'assets/img/illustrations/teamwork.svg'%}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-lg-3">
+            <div class="col-xxl-12">
+                <div class="card border-0 h-100">
+                    <div class="card-body d-flex flex-column justify-content-between p-4">
+                        <div>
+                            <ul class="list-unstyled">
+                                <li class="d-flex mb-2"><span>With our AI-powered HR optimization app, the recruitment landscape has been revolutionized. Job seekers now possess a powerful tool to elevate their careers, showcasing their potential to employers. Simultaneously, HR professionals can swiftly identify top talents and make data-driven hiring choices. Together, we embark on a journey that streamlines HR processes, empowers job seekers, and ensures the perfect match between talent and opportunity. Embrace the future of hiring with our app, where success knows no bounds. Unlock your career aspirations today!</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="{%static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
+    <script src="{%static 'assets/js/bs-init.js'%}"></script>
+    <script src="{%static 'assets/js/startup-modern.js'%}"></script>
+</body>
+
+</html>

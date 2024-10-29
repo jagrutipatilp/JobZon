@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Job Zon</title>
+    <link rel="stylesheet" href="{%static 'assets/bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="{%static 'assets/css/bs-theme-overrides.css'%}">
+    <link rel="stylesheet" href="{%static 'assets/css/Footer-Basic-icons.css'%}">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md fixed-top navbar-shrink py-3 navbar-light" id="mainNav">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span style="color: #97144d;font-weight: bold;">Job Zon</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    {% if login %}
+                    <li class="nav-item"><a class="nav-link" href="{%url 'index'%}">Home</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{%url 'index2'%}">Home</a></li>
+                    {% endif %}
+                    <li class="nav-item"><a class="nav-link" href="{%url 'jobs'%}">Job</a></li>
+                    
+                    <li class="nav-item"><a class="nav-link" href="{%url 'Guidlines'%}">Guidlines</a></li>
+                    <li class="nav-item"><a class="nav-link " href="{%url 'contacts'%}">Contacts</a></li>
+                </ul>{% if login %}
+                <a class="btn btn-primary shadow" role="button" href="{% url 'signin' %}">Log In</a>
+                {% else %}
+                <a class="btn btn-primary shadow" role="button" href="{% url 'index' %}">Log Out</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <section class="py-5 mt-5">
+        <form method="post" enctype="multipart/form-data">
+                            
+            {% csrf_token %}
+        <div class="card mb-5">
+            <div class="card-body p-sm-5">
+                <div class="container">
+                    <h2 class="display-6 fw-bold text-center mb-4">Sign Up<span class="underline"></span></h2>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xxl-2 d-grid"><button class="btn btn-primary" type="button" style="background: url(&quot; {%static 'assets/img/products/1.jpg%'%} &quot;);background-size: contain;box-shadow: 2px 2px var(--bs-tertiary-color);margin-bottom: 12px;margin-top: 3px;height: 170%;min-width: 200px;max-width: 200px;"></button>
+                        <div class="input-group"></div>
+                    </div>
+                    <div class="col">
+                        
+
+                            <div class="mb-3"><input class="form-control" type="text" id="name-2" name="name" placeholder="Name" required=""></div>
+                            <div class="mb-3"><input class="form-control" type="email" id="email-4" name="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required=""> </div>
+                            <input name='dob' class="form-control" type="date" style="border-radius: 16px;border-width: 1px;border-color: var(--bs-primary-bg-subtle);padding: 0px;padding-top: 4px;padding-right: 13px;padding-bottom: 9px;padding-left: 29px;width: 100%;height: 50.6px;" required="" placeholder="Date of Birth">
+                        
+                    </div>
+                </div>
+                <div class="row" style="padding: 5px;margin-top: 16px;">
+                    <div class="col"><input type="number" class="form-control" placeholder="Experiance in years" name="exp"></div>
+                    <div class="col"><select class="form-select" name='post'>
+                                <option value="" disabled selected>Post</option>
+                                <option value="13">Intern</option>
+                                <option value="14">Cleark</option>
+                            </optgroup>
+                        </select></div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-check"><input class="form-check-input" type="radio" name='gen' vlaue='m' id="formCheck-17" style="border-width: 2px;"><label class="form-check-label" for="formCheck-17">Male</label></div>
+                            </div>
+                            <div class="col">
+                                <div class="form-check"><input class="form-check-input" type="radio" name='gen' vlaue='f'  id="formCheck-18" style="border-width: 2px;"><label class="form-check-label" for="formCheck-18">Female</label></div>
+                            </div>
+                            <div class="col">
+                                <div class="form-check"><input class="form-check-input" type="radio" name='gen' vlaue='o'  id="formCheck-19" style="border-width: 2px;"><label class="form-check-label" for="formCheck-19">Other</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding: 5px;">
+                    <div class="col"><input type="text" class="form-control" placeholder="Address 1" name='ad1'></div>
+                    <div class="col"><input type="text" class="form-control" placeholder="Address 2" name='ad2'></div>
+                    <div class="col"><input type="tel" class="form-control" placeholder="Phone no  1" name='pho1'></div>
+                </div>
+                <div class="row" style="padding: 5px;">
+                    <div class="col"><input type="tel" class="form-control" placeholder="Phone no 2" name='pho2'></div>
+                    
+                    <div class="col"><select class="form-select" placeholder="sector" name='work'>
+                            <optgroup label="This is a group">
+                                <option value="12" selected="">Open to Work</option>
+                                <option value="13"> Viewer</option>
+                            </optgroup>
+                        </select></div>
+                    <div class="col">    <input type="file" placeholder="Resume" class="btn btn-primary shadow" name="resume"></div>
+                </div>
+                <div class="row" style="padding: 5px;">
+                    <div class="col"><input type="text" class="form-control" name='edu' placeholder="Education Degree"></div>
+                    <div class="col"><input type="number" class="form-control" name='per'  placeholder="Grades in Percentage"></div>
+                    <div class="col"><input type="text" class="form-control" name='uni'  placeholder="university"></div>
+                </div>
+                <div class="row" style="padding: 5px;">
+                    <div class="col"><textarea class="form-control" placeholder="About"></textarea></div>
+                </div>
+                
+                <div class="row" style="padding: 5px;">
+                    <div class="col">
+                        <input type="text" class="form-control" name="username" placeholder="Username">
+                        <div id="username-error" style="color: red;"></div>
+                    </div>
+                    <div class="col"><input type="text" class="form-control" name='pass1'  placeholder="Password"></div>
+                    <div class="col"><input type="text" class="form-control" name='pass2'  placeholder="re-enter"></div>
+                </div>
+                <div class="row" style="padding: 5px;">
+                    <div class="col">
+                        <div id="password-error" style="color: red;"></div>
+                    </div>
+                </div>
+                <div class="row justify-content-center align-items-center" style="padding: 5px;">
+                    <div class="col text-center align-self-center"><button class="btn btn-primary" type="submit">Save</button></div>
+                    <div class="col text-center align-self-center"><button class="btn btn-primary" type="reset">Reset</button></div>
+                </div>
+                
+            </div>
+        </div>
+    </form>
+    </section>
+    <footer>
+        <footer></footer>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var pass1Field = document.querySelector('input[name="pass1"]');
+            var usernameField = document.querySelector('input[name="username"]');
+            var usernameError = document.getElementById('username-error');
+            var pass2Field = document.querySelector('input[name="pass2"]');
+            var signupForm = document.querySelector('form');
+            var passwordError = document.getElementById('password-error');
+    
+            signupForm.addEventListener("submit", function(event) {
+                if (pass1Field.value !== pass2Field.value) {
+                    event.preventDefault(); // Prevent form submission
+                    passwordError.textContent = "Password does not match!";
+                } else {
+                    passwordError.textContent = ""; // Clear error message if passwords match
+                }
+            });
+            usernameField.addEventListener("blur", function() {
+                var enteredUsername = usernameField.value.trim();
+                if (enteredUsername !== "") {
+                    // Send an AJAX request to check if the username is already taken
+                    fetch(`/check_username/${enteredUsername}/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.exists) {
+                                usernameError.textContent = "Username is already taken!";
+                            } else {
+                                usernameError.textContent = "";
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error checking username:", error);
+                        });
+                }
+            });
+        
+        
+    
+            
+        });
+    </script>
+    
+    
+    
+    
+    <script src="{%static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
+    <script src="{%static 'assets/js/bs-init.js'%}"></script>
+    <script src="{%static 'assets/js/startup-modern.js'%}"></script>
+</body>
+
+</html>

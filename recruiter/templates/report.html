@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Job Zon</title>
+    <link rel="stylesheet" href="{%static 'assets/bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="{%static 'assets/css/bs-theme-overrides.css'%}">
+    <link rel="stylesheet" href="{%static 'assets/css/Footer-Basic-icons.css'%}">
+    <script>
+        function downloadPDF() {
+            const base64String = "{{ base64_string }}";
+            
+            console.log(base64String);
+            // Remove the "data:application/pdf;base64," prefix if it exists
+            const base64WithoutPrefix = base64String.replace(/^data:application\/pdf;base64,/, "");
+    
+            // Decode the Base64 string to binary data
+            const byteCharacters = atob(base64WithoutPrefix);
+            const byteNumbers = new Array(byteCharacters.length);
+    
+            // Convert the string to byte numbers
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+    
+            // Create a Uint8Array to hold the byte numbers
+            const byteArray = new Uint8Array(byteNumbers);
+    
+            // Create a Blob from the byte array
+            const blob = new Blob([byteArray], { type: 'application/pdf' });
+    
+            // Create a link element
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'downloaded_resume.pdf'; // Set the default file name
+    
+            // Programmatically click the link to trigger the download
+            document.body.appendChild(link); // Append to body
+            link.click();
+            document.body.removeChild(link); // Remove after clicking
+        }
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md fixed-top navbar-shrink py-3 navbar-light" id="mainNav">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span style="color: #97144d;font-weight: bold;">Job Zon</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="indexr">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Jobposting">Job Posting</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="Shortlisted">Shortlisted</a></li>
+                    <li class="nav-item"><a class="nav-link " href="{%url 'ALlJobs'%}">Jobs</a></li>
+                </ul><a class="btn btn-primary shadow" role="button" href="Jobposting">Log Out</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div id="wrapper" style="margin-top:60px;">
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content" style="padding: 20px;">
+                <div class="container-fluid">
+                    <div class="d-sm-flex justify-content-between align-items-center mb-4">
+                        <h3 class="text-dark mb-0" style="font-weight: bold;">{{ user.name }}</h3>
+                        <div class="row">
+                            <div class="col-auto"><a class="btn btn-primary btn-sm text-end d-none d-sm-inline-block" role="button" href="#" style="--bs-primary: #ce007c;--bs-primary-rgb: 206,0,124;text-align: right;"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Download Video</a></div>
+                            <div class="col-xxl-6"><a class="btn btn-primary btn-sm d-none d-sm-inline-block" 
+                                role="button" 
+                                href="#" 
+                                style="--bs-primary: #ce007c; --bs-primary-rgb: 206,0,124; width: 191px;" 
+                                onclick="downloadPDF()">
+                                <i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Download Resume
+                             </a></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-info py-2" style="border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">
+                                <div class="card-body">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col me-2">
+                                            <div class=" text-info fw-bold text-xs mb-1"><span  class="text-primary" style="font-family: ABeeZee, sans-serif;font-size: 17px;">Resume Match Score</span></div>
+                                            <div class="row g-0 align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="text-dark fw-bold h5 mb-0 me-3"><span style="font-family: ABeeZee, sans-serif;font-size: 14px;">86%</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm border rounded-pill">
+                                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 86%; border-radius:8px;"><span class="visually-hidden">86%</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-info py-2" style="border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">
+                                <div class="card-body">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col me-2">
+                                            <div class=" text-info fw-bold text-xs mb-1"><span  class="text-primary" style="font-family: ABeeZee, sans-serif;font-size: 17px;">Personality</span></div>
+                                            <div class="row g-0 align-items-center">
+                                                <div class="col-auto col-xxl-10">
+                                                    <div class="text-start text-dark fw-bold h5 mb-0 me-3"><span style="font-family: ABeeZee, sans-serif;font-size: 17px;">{{ predicted_personality }}</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-info py-2" style="border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">
+                                <div class="card-body">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col me-2">
+                                            <div class=" text-info fw-bold text-xs mb-1"><span  class="text-primary" style="font-family: ABeeZee, sans-serif;font-size: 17px;">Skill Score</span></div>
+                                            <div class="row g-0 align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="text-dark fw-bold h5 mb-0 me-3"><span style="font-family: ABeeZee, sans-serif;font-size: 17px;">80%</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm progress-sm border rounded-pill">
+                                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 80%;border-radius:8px;"><span class="visually-hidden">80%</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-left-info py-2" style="border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">
+                                <div class="card-body">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col me-2">
+                                            <div class=" text-info fw-bold text-xs mb-1"><span  class="text-primary" style="font-family: ABeeZee, sans-serif;font-size: 17px;">Average Stability</span></div>
+                                            <div class="row g-0 align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="text-dark fw-bold h5 mb-0 me-3"><span style="font-family: ABeeZee, sans-serif;font-size: 17px;">{{ avg_stability }}</span></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm progress-sm border rounded-pill">
+                                                        <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: {{ avg_stability }}%; border-radius:8px;"><span class="visually-hidden">{{ avg_stability }}</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="card shadow mb-4" style="border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="text-primary fw-bold m-0">Personality</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area"><img src="data:image/png;base64,{{ personality_img }}" alt="Personality Analysis"  class="img-fluid" style="border-radius: 10px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card shadow mb-4" style="height: 94%;border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="text-primary fw-bold m-0">Personality&nbsp; Description</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p class="text-start" style="font-family: ABeeZee, sans-serif;">{{ description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-7 col-xl-8">
+                            <div class="card shadow mb-4" style="border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="text-primary fw-bold m-0">Posture</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-area"><img src="data:image/png;base64,{{ posture_img }}" alt="Personality Analysis"  class="img-fluid" style="border-radius: 10px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-xl-4" style="height: inherit;">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="card shadow mb-4" style="border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h6 class="text-primary fw-bold m-0">Stuttering&nbsp;</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="chart-area"><img src="data:image/png;base64,{{ stutt_img }}" alt="Personality Analysis"  class="img-fluid" style="border-radius: 10px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow mb-4" style="border-top-left-radius: 10px;border-top-right-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">
+                                <div class="card-header py-3">
+                                    <h6 class="text-primary fw-bold m-0">Average&nbsp;</h6>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <div class="row g-0 align-items-center">
+                                            <div class="col me-2">
+                                                <h6 class="mb-0"><strong>Stability Description</strong></h6><span class="text-xs" style="font-family: ABeeZee, sans-serif;">{{ stability_description }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row g-0 align-items-center">
+                                            <div class="col me-2">
+                                                <h6 class="mb-0"><strong>Average Stability&nbsp;</strong></h6><span class="text-xs" style="font-family: ABeeZee, sans-serif;">{{ avg_stability }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row g-0 align-items-center">
+                                            <div class="col me-2">
+                                                <h6 class="mb-0"><strong>Distance Description&nbsp;</strong></h6><span class="text-xs" style="font-family: ABeeZee, sans-serif;">{{ distance_description }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row g-0 align-items-center">
+                                            <div class="col me-2">
+                                                <h6 class="mb-0"><strong>Average Distance</strong></h6><span class="text-xs" style="font-family: ABeeZee, sans-serif;">{{ avg_distance }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="row g-0 align-items-center">
+                                            <div class="col me-2">
+                                                <h6 class="mb-0"><strong>Expression</strong></h6><span class="text-xs" style="font-family: ABeeZee, sans-serif;">{{ expression }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card shadow mb-4" style="border-radius: 10px;">
+                                <div class="card-header py-3">
+                                    <h6 class="text-primary fw-bold m-0">Questions and Answers</h6>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    {% for question, answer in qa %}
+                                        <li class="list-group-item">
+                                            <div class="row g-0 align-items-center">
+                                                <div class="col me-2">
+                                                    <h6 class="mb-0" style="color: var(--bs-emphasis-color); font-weight: bold;">
+                                                        <strong>{{ question }}</strong>
+                                                    </h6>
+                                                    <p style="font-family: ABeeZee, sans-serif;">{{ answer }}</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © JobZon 2024</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script src="{%static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
+    <script src="{%static 'assets/js/bs-init.js'%}"></script>
+    <script src="{%static 'assets/js/startup-modern.js'%}"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview AI</title>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'assets/css/bs-theme-overrides.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Steps-Progressbar.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Footer-Basic-icons.css' %}">
+</head>
+<body style="width: 100%; height: 100vh; margin: 0; display: flex;">
+
+    <!-- Left Section -->
+    <div style="flex: 1; display: flex; flex-direction: column; border-right: 2px solid black; height: 100%;background: #000000;">
+        <!-- Camera View -->
+        <div style="flex: 7;width: 100%;margin-top: 30px;">
+            <video id="cameraView" style="background: #000000; width: 100%; height: 100%;" autoplay playsinline></video>
+        </div>
+        <div style="flex: 7;width: 100%;">
+            <div class="row">
+                <div class="col-auto align-self-center m-auto" style="padding: 17px;">
+                    <button class="btn btn-primary" id="startButton" type="button" style="margin: 17px;">Start</button>
+                    <button class="btn btn-primary" id="stopButton" type="button" style="margin: 17px;">Stop</button>
+                    <input type="hidden" id="job_id" value="{{ job_id }}">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Section -->
+    <div id="cardContainer" style="flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto;">
+        
+        <!-- Cards will be dynamically added here -->
+    </div>
+    <script>
+        let recognition;
+        let isListening = false;
+        let cardContainer = document.getElementById('cardContainer');
+        let mediaRecorder;
+        let videoChunks = [];
+        let stream;
+        const job_id = document.getElementById('job_id').value;
+
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = function(event) {
+                const lastResultIndex = event.results.length - 1;
+                const result = event.results[lastResultIndex];
+
+                if (result.isFinal) {
+                    updateAnswerCard(result[0].transcript);
+                    askNextQuestion(result[0].transcript);
+                }
+            };
+
+            recognition.onend = function() {
+                if (isListening) {
+                    recognition.start();  // Restart recognition if still listening
+                }
+            };
+        }
+
+        function toggleListening() {
+            if (isListening) {
+                recognition.stop();
+                isListening = false;
+            } else {
+                recognition.start();
+                isListening = true;
+            }
+        }
+
+        function addCard(content, type) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.margin = '10px';
+            card.style.padding = '20px';
+            card.style.background = type === 'question' ? '#f0fff8' : '#eceeffc0';
+
+            const subtitle = document.createElement('p');
+            subtitle.className = 'text-muted card-subtitle mb-2';
+            subtitle.innerText = type === 'question' ? 'Question' : 'Answer';
+
+            const text = document.createElement('p');
+            text.className = 'card-text';
+            text.innerText = content;
+
+            card.appendChild(subtitle);
+            card.appendChild(text);
+            cardContainer.appendChild(card);
+            cardContainer.scrollTop = cardContainer.scrollHeight; // Auto-scroll to the latest card
+        }
+
+        function updateQuestionCard(text) {
+            addCard(text, 'question');
+        }
+
+        function updateAnswerCard(text) {
+            addCard(text, 'answer');
+        }
+
+        function fetchInitialQuestion() {
+            fetch(`/initialque/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.question) {
+                        updateQuestionCard(data.question);
+                    } else {
+                        updateQuestionCard("No initial question available.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching initial question:', error);
+                    updateQuestionCard("An error occurred. Please try again.");
+                });
+        }
+
+        function askNextQuestion(responseText) {
+            fetch(`/get-next-question/?response_text=${encodeURIComponent(responseText)}`)
+              .then(response => response.json())
+              .then(data => {
+                if (data.question === "Thank you for participating in the interview.") {
+                    // Stop recording
+                    if (mediaRecorder && mediaRecorder.state === 'recording') {
+                        mediaRecorder.stop();
+                    }
+                    
+                    // Wait for upload to complete before redirecting
+                    upd();
+                } else if (data.question) {
+                  updateQuestionCard(data.question);
+                } else {
+                  updateQuestionCard("Please wait a moment.");
+                }
+              })
+              .catch(error => {
+                console.error('Error fetching next question:', error);
+                updateQuestionCard("An error occurred. Please try again.");
+              });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cameraView = document.getElementById('cameraView');
+
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then(function (mediaStream) {
+                    stream = mediaStream;
+                    cameraView.srcObject = stream;
+
+                    // Check if the browser supports the MIME type
+                    if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus')) {
+                        mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp8,opus' });
+                    } else {
+                        mediaRecorder = new MediaRecorder(stream);
+                    }
+
+                    mediaRecorder.ondataavailable = function (event) {
+                        if (event.data.size > 0) {
+                            videoChunks.push(event.data);
+                        }
+                    };
+
+                    mediaRecorder.onstop = function () {
+                        upd();
+                    };
+
+                    document.getElementById('startButton').addEventListener('click', () => {
+                        if (mediaRecorder && mediaRecorder.state === 'inactive') {
+                            mediaRecorder.start();
+                            fetchInitialQuestion();
+                        }
+                        toggleListening();
+                    });
+
+                    document.getElementById('stopButton').addEventListener('click', () => {
+                        if (mediaRecorder && mediaRecorder.state === 'recording') {
+                            mediaRecorder.stop();
+                            console.log('Upload successful:');
+                        }
+                    });
+                })
+                .catch(function (error) {
+                    console.error('Error accessing camera and microphone:', error);
+                });
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function upd() {
+            return new Promise((resolve, reject) => {
+                const formData = new FormData();
+                formData.append('videoBlob', new Blob(videoChunks, { type: 'video/webm' }), 'recording.webm');
+                formData.append('job_id', job_id);
+                console.log(job_id);
+                fetch('/thankyou/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')  // Ensure CSRF token is included
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        console.log('Upload successful:', data);
+                        window.location.href = "{% url 'thankyou' %}";  // Redirect to thank you page
+                        resolve();  // Resolve the promise after successful upload
+                    } else {
+                        console.error('Upload failed:', data);
+                        reject(new Error(data.message));  // Reject the promise with an error message
+                    }
+                })
+                .catch(error => {
+                    console.error('Error uploading recording:', error);
+                    reject(error);  // Reject the promise if there's an error
+                });
+            });
+        }
+    </script>
+</body>
+</html>

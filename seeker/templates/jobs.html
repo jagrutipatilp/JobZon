@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Job Zon</title>
+    <link rel="stylesheet" href="{%static 'assets/bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="{%static 'assets/css/bs-theme-overrides.css'%}">
+    <link rel="stylesheet" href="{%static 'assets/css/Footer-Basic-icons.css'%}">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md fixed-top navbar-shrink py-3 navbar-light" id="mainNav">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span style="color: #97144d;font-weight: bold;">Job Zon</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    {% if login %}
+                    <li class="nav-item"><a class="nav-link" href="{%url 'index'%}">Home</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{%url 'index2'%}">Home</a></li>
+                    {% endif %}
+                    <li class="nav-item"><a class="nav-link active" href="{%url 'jobs'%}">Job</a></li>
+                    
+                    <li class="nav-item"><a class="nav-link" href="{%url 'Guidlines'%}">Guidlines</a></li>
+                    <li class="nav-item"><a class="nav-link " href="{%url 'contacts'%}">Contacts</a></li>
+                </ul>{% if login%}
+                <a class="btn btn-primary shadow" role="button" href="{% url 'signin' %}">Log In</a>
+                {% else %}
+                <a class="btn btn-primary shadow" role="button" href="{% url 'index' %}">Log Out</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    
+    <header class="pt-5" >
+        <div class="container-fluid pt-4 pt-xl-5" style="padding-left: 0px;padding-right: 0px;"><img class="img-fluid" style="width: 100%;background: url(&quot;assets/img/1(1).jpg&quot;);"  src="{%static 'assets/img/jobbg.jpg'%}"></div>
+    </header>
+    <section>
+        <div class="py-4 py-xl-5" style="padding:1%;">
+            <div id="filterSortSection" style="z-index: 1000;">
+                <!-- Your filter and sort section content here -->
+                <section class="sticky-top">
+                    <div class="row" style="margin: 10px;">
+                        <div class="col-xxl-1 text-start " style="width:10%;">
+                            <div class="dropdown">
+                                <button class="btn btn-primary " type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Filter
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-filter fs-3">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M5.5 5h13a1 1 0 0 1 .5 1.5l-5 5.5l0 7l-4 -3l0 -4l-5 -5.5a1 1 0 0 1 .5 -1.5"></path>
+                                    </svg>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                                    <form class="px-3">
+                                        <div class="mb-3">
+                                            <label class="form-label">Experience Greater Than</label>
+                                            <input type="number" class="form-control" id="experienceInput" placeholder="Years">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Locations</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="location1" id="location1">
+                                                <label class="form-check-label" for="location1">Location 1</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="location2" id="location2">
+                                                <label class="form-check-label" for="location2">Location 2</label>
+                                            </div>
+                                            <!-- Add more location checkboxes as needed -->
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Openings</label>
+                                            <input type="number" class="form-control" id="openingsInput" placeholder="Number of Openings">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Type</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="part-time" id="partTime">
+                                                <label class="form-check-label" for="partTime">Part Time</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="full-time" id="fullTime">
+                                                <label class="form-check-label" for="fullTime">Full Time</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="internship" id="internship">
+                                                <label class="form-check-label" for="internship">Internship</label>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary" id="applyFilterBtn">Apply</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                                
+                    
+                        <!-- Inside the sort section -->
+                        <div class="col-xxl-1 text-start "style="width:10%;">
+                            <div class="dropdown">
+                                <button class="btn btn-primary" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Sort
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-arrows-sort fs-3">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 9l4-4l4 4m-4 -4v14"></path>
+                                        <path d="M21 15l-4 4l-4-4m4 4v-14"></path>
+                                    </svg>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="sortDropdown">
+                                    <a class="dropdown-item" href="#">Last Date</a>
+                                    <a class="dropdown-item" href="#">Openings</a>
+                                    <a class="dropdown-item" href="#">Experience</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <input type="search" class="form-control" placeholder="Search" style="width: 100%;" id="searchInput">
+                        </div>
+                        <div class="col-xxl-1 text-end">
+                            <button class="btn btn-primary text-center shadow form-label" id="searchBtn">Search</button>
+                        </div>
+                        
+                    </div>
+                </section>
+            </div>
+            <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+                {% for job in jobs %}
+                <!-- Your job card code here -->
+                <div class="col-xxl-12 job-card">
+                    <div class="card border-light border-1 d-flex justify-content-center p-4">
+                        <div class="card-body">
+                            <div class="bs-icon-lg bs-icon-rounded bs-icon-secondary d-flex flex-shrink-0 justify-content-center align-items-center d-inline-block mb-4 bs-icon">
+                                <!-- Your icon here -->
+                            </div>
+                            <div>
+                                <h4 class="fw-bold">{{ job.jobname }}</h4>
+                                <p class="text-muted">{{ job.description }}</p>
+                                {% if login %}
+                                <a class="btn btn-primary text-center shadow form-label" role="button" href="{% url 'signin' %}">Apply</a>
+                                {% else %}
+                                <a class="btn btn-primary text-center shadow form-label" role="button" href="{% url 'apply_for_job' job_id=job.id %}">Apply</a>
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <footer></footer>
+    </footer>
+    <script src="{%static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
+    <script src="{%static 'assets/js/bs-init.js'%}"></script>
+    <script src="{%static 'assets/js/startup-modern.js'%}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        
+        $(document).ready(function () {
+           
+            
+    
+            // Sort option click event
+            $('.dropdown-menu a.dropdown-item').click(function () {
+                var selectedSortOption = $(this).text();
+                // Implement sorting logic based on selectedSortOption
+            });
+
+
+            $('#searchBtn').click(function () {
+                var searchInput = $('#searchInput').val().toLowerCase().trim();
+    
+                if (searchInput !== '') {
+                    $('.job-card').hide();
+                    $('.job-card').each(function () {
+                        var jobName = $(this).find('.job-name').text().toLowerCase();
+                        if (jobName.includes(searchInput)) {
+                            $(this).show();
+                        }
+                    });
+                } else {
+                    // Show all job cards if search input is empty
+                    $('.job-card').show();
+                }
+            });
+
+        });
+        
+    </script>
+    
+
+</body>
+
+</html>

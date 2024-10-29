@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Job Zon</title>
+    <link rel="stylesheet" href="{%static 'assets/bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="{%static 'assets/css/bs-theme-overrides.css'%}">
+    <link rel="stylesheet" href="{%static 'assets/css/Footer-Basic-icons.css'%}">
+    <style>
+        .card-body {
+          display: none;
+        }
+        .card.expanded .card-body {
+          display: block;
+        }
+      </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md fixed-top navbar-shrink py-3 navbar-light" id="mainNav">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span style="color: #97144d;font-weight: bold;">Job Zon</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="{%url 'indexr'%}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{%url 'Jobposting'%}">Job Posting</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{%url 'ALlJobs'%}">Jobs</a></li>
+                    <li class="nav-item"><a class="nav-link " href="{%url 'Shortlisted'%}">Shortlisted</a></li>
+                </ul><a class="btn btn-primary shadow" role="button" href="{%url 'index'%}">Log Out</a>
+            </div>
+        </div>
+    </nav>
+    <section style="margin-top: 95px;">
+        <div id="filterSortSection" style="z-index: 1000;">
+            <!-- Your filter and sort section content here -->
+            <section class="sticky-top">
+                <div class="row" style="margin: 10px;">
+                    <div class="col-xxl-1 text-start" style="width: 10%;">
+                        <div class="dropdown">
+                            <button disabled class="btn btn-primary" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Filter
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-filter fs-3">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M5.5 5h13a1 1 0 0 1 .5 1.5l-5 5.5l0 7l-4 -3l0 -4l-5 -5.5a1 1 0 0 1 .5 -1.5"></path>
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                                <form class="px-3">
+                                    <div class="mb-3">
+                                        <label class="form-label">Experience Greater Than</label>
+                                        <input type="number" class="form-control" id="experienceInput" placeholder="Years">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Criteria</label>
+                                        <input type="text" class="form-control" id="criteriaInput" placeholder="Qualifications, skills, etc.">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Skills</label>
+                                        <input type="text" class="form-control" id="skillsInput" placeholder="Required skills">
+                                    </div>
+                                    <!-- Add more text fields as needed for other criteria -->
+                                    <button type="button" class="btn btn-primary" id="applyFilterBtn">Apply</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                            
+                
+                    <!-- Inside the sort section -->
+                    <div class="col-xxl-1 text-start "style="width:10%;">
+                        <div class="dropdown">
+                            <button disabled class="btn btn-primary" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sort
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-arrows-sort fs-3">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M3 9l4-4l4 4m-4 -4v14"></path>
+                                    <path d="M21 15l-4 4l-4-4m4 4v-14"></path>
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu" id='dropsort' aria-labelledby="sortDropdown">
+                                <a class="dropdown-item" >name</a>
+                                <a class="dropdown-item" >marks</a>
+                                <a class="dropdown-item" >Ranking</a>
+                                <a class="dropdown-item" >skills</a>
+                                <a class="dropdown-item" >experiance</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <select class="form-select" id="jobSelect" aria-label="Select a job">
+                            <option selected disabled>Select a job</option>
+                            {% for job in jobs %}
+                                <option value="{{ job.id }}" {% if forloop.first %}selected{% endif %}>{{ job.jobname }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    
+                </div>
+            </section>
+        </div>
+    </section>
+    <div class="card" id="applicantCardContainer">
+        <!-- Applicants will be dynamically added here -->
+    </div>
+    <section>
+        <div class="row">
+            <div class="col">
+                
+                <div class="card" id="applicantList">
+                    
+                    {% for job in jobs %}
+                    {% if forloop.first %}
+                    {% for applicant in job.interviewednts.all %}
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xxl-1">
+                                <div class="bs-icon-xl bs-icon-circle bs-icon-primary bs-icon my-4"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
+                                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"></path>
+                                    </svg></div>
+                            </div>
+                            <div class="col align-self-center">
+                                <h5><strong>{{ applicant.name }}</strong></h5>
+                                <div class="row">
+                                    <div class="col">
+                                        <h6>CV Match</h6>
+                                        <div class="progress">
+                                            <div class="progress-bar" id="progressBar" style="width: {{ applicant.match }}%;" aria-valuenow={{ applicant.match }} aria-valuemin="0" aria-valuemax="100" style="width: 50%;">{{ applicant.match }}%</div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 17px;">
+                                    <div class="col">
+                                        <h6>Skills :{{ applicant.skillstxt }}</h6>
+                                       
+                                    </div>
+                                    <div class="col"><button disabled class="btn btn-primary"  type="button">Shortlist</button></div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+     
+    <script>
+        
+        const jobSelect = document.getElementById('jobSelect');
+        const dropdownItems = document.querySelectorAll('#dropsort .dropdown-item');    
+        const applicantList = document.getElementById('applicantList');
+        const filterButton = document.getElementById("filterDropdown");
+        const sortButton = document.getElementById("sortDropdown");
+        let selectedSortOption = '';
+        //var djangoValue = document.getElementById("valueFromDjango").textContent;
+        let filters = {};
+        let sortena = false;
+        {% load custom_filters %}
+        const selectedJobId = jobSelect.value;
+        // Get a reference to the button element
+        const filterbutton = document.getElementById("applyFilterBtn");
+        let applicantsByJob = {
+            {% for job in jobs %}
+                '{{ job.id }}': [
+                    {% for applicant in job.interviewednts.all %}
+                        {
+                            id: '{{ applicant.id }}',
+                            name: '{{ applicant.name }}',
+                            match: '{{ applicant.match }}',
+                            per: '{{ applicant.per }}',
+                            ranking: '{{ applicant.match }}',
+                            experiance: '{{ applicant.exp }}',
+                            exp: '{{ applicant.exp }}',
+                            post:'{{ applicant.post }}',
+                            skills: '{{ applicant.skillstxt }}',
+                            ad1: '{{ applicant.ad1 }}',
+                            ad2: '{{ applicant.ad2 }}',
+                            pho1: '{{ applicant.pho1 }}',
+                            pho2: '{{ applicant.pho2 }}',
+                            gen: '{{ applicant.gen }}',
+                            dob: '{{ applicant.dob }}',
+                            email: '{{ applicant.email }}',
+                            edu: '{{ applicant.edu }}',
+                            per: '{{ applicant.per }}',
+                            uni: '{{ applicant.uni }}',
+                            about: '{{ applicant.about }}',
+                            interviewres: '{{ applicant.interviewres }}',
+                            sklno: '{{ applicant.skills }}',
+                            resumetxt: '{{ applicant.resumetxt|truncatechars:60000|escapejs }}',
+                            applied_interview: [
+                                {% for interview in applicant.applied_interview.all %}
+                                    {
+                                        Question: '{{ interview.Question|escapejs }}',
+                                        Answer: '{{ interview.Answer|escapejs }}',
+                                        // Add other interview attributes as needed
+                                    },
+                                {% endfor %}
+                            ],
+                            // Add other applicant attributes here
+                        },
+                    {% endfor %}
+                ],
+            {% endfor %}
+        };
+        console.log(applicantsByJob)
+        const originalApplicantsByJob = JSON.parse(JSON.stringify(applicantsByJob));
+
+        // Add a click event listener
+       
+        filterbutton.addEventListener("click", function() {
+            // This code will be executed when the button is clicked
+           
+            applicantsByJob = JSON.parse(JSON.stringify(originalApplicantsByJob));
+            const experienceThreshold = experienceInput.value;
+            const criteriaKeywords = criteriaInput.value.toLowerCase().split(',').map(keyword => keyword.trim());
+            const skillsKeywords = skillsInput.value.toLowerCase().split(',').map(keyword => keyword.trim());
+            const selectedJobId = jobSelect.value;
+            
+            for (var prop in applicantsByJob) {
+                // Check if the property value is an array
+                if (Array.isArray(applicantsByJob[prop])) {
+                    
+                    // Filter out items based on conditions
+                    applicantsByJob[prop] = applicantsByJob[prop].filter(item =>item.experiance >= experienceThreshold && criteriaKeywords.some(keyword => item.resumetxt.includes(keyword)) && skillsKeywords.some(keyword => item.skills.includes(keyword)));
+                    
+                }
+            }
+            jobSelect.dispatchEvent(new Event('change'));
+            // You can add more code here to perform other actions
+        });
+        
+        // Sort applicants by ranking for each job
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function() {
+                sortena = true;
+                const selectedOption = item.innerText;
+                selectedSortOption = selectedOption;
+                if (selectedOption === 'marks') {
+                    for (const jobId in applicantsByJob) {
+                        if (applicantsByJob.hasOwnProperty(jobId)) {
+                            applicantsByJob[jobId].sort((a, b) => a.per - b.per);
+                        }
+                    }
+                    jobSelect.dispatchEvent(new Event('change'));
+                } else if (selectedOption === 'experience') {
+                    for (const jobId in applicantsByJob) {
+                        if (applicantsByJob.hasOwnProperty(jobId)) {
+                            applicantsByJob[jobId].sort((a, b) => a.experiance - b.experiance);
+                        }
+                    }
+                    jobSelect.dispatchEvent(new Event('change'));
+                } else if (selectedOption === 'skills') {
+                    for (const jobId in applicantsByJob) {
+                        if (applicantsByJob.hasOwnProperty(jobId)) {
+                            applicantsByJob[jobId].sort((a, b) => a.sklno.localeCompare(b.sklno));
+                        }
+                    }
+                    
+                    jobSelect.dispatchEvent(new Event('change'));
+                }  else if (selectedOption === 'name') {
+                    for (const jobId in applicantsByJob) {
+                        if (applicantsByJob.hasOwnProperty(jobId)) {
+                            applicantsByJob[jobId].sort((a, b) => a.name.localeCompare(b.name));
+                        }
+                    }
+                    
+                    jobSelect.dispatchEvent(new Event('change'));
+                } else if (selectedOption === 'ranking') {
+                    for (const jobId in applicantsByJob) {
+                        if (applicantsByJob.hasOwnProperty(jobId)) {
+                            applicantsByJob[jobId].sort((a, b) => a.ranking - b.ranking);
+                        }
+                    }
+                    jobSelect.dispatchEvent(new Event('change'));
+                }
+                
+                // Update the sorting flag
+               
+            });
+        });
+        
+        document.querySelector('#sortDropdown').addEventListener('click', function() {
+            const selectedOption = document.querySelector('#dropsort .dropdown-item.active');
+            if (selectedOption) {
+                sortena=true;
+            } 
+        });
+        if(sortena==false){
+            for (const jobId in applicantsByJob) {
+                if (applicantsByJob.hasOwnProperty(jobId)) {
+                    applicantsByJob[jobId].sort((a, b) => a.ranking - b.ranking);
+                }
+            }
+        }
+        
+        jobSelect.addEventListener('change', () => {
+            const selectedJobId = jobSelect.value;
+    
+            if (selectedJobId) {
+                const selectedApplicants = applicantsByJob[selectedJobId];
+                applicantList.innerHTML = '';
+                selectedApplicants.forEach(applicant => {
+                    var selectcd = jobSelect.value;
+                    var applicantCardHTML=``;
+                    const ss = applicant.applied_interview;
+                    
+                    applicantCardHTML += `
+                    <div class="" style="margin-right: 15px;margin-left: 15px;">
+                        <div class="card" >
+                            <div class="row" style="margin-right: 15px;margin-left: 15px;">
+                                <div class="col-xxl-1">
+                                    <div class="bs-icon-xl bs-icon-circle bs-icon-primary bs-icon my-4"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
+                                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"></path>
+                                        </svg></div>
+                                </div>
+                                <div class="col align-self-center">
+                                    <h5><strong>${applicant.name} </strong></h5>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="row">
+                                                <div  style="width:auto;">
+                                                    <h6>CV Ranking</h6>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" aria-valuenow=${applicant.match} style="width: ${applicant.match}%;" aria-valuemin="0" aria-valuemax="100" >${applicant.match}%</div>
+                                                    </div>
+                                                </div>
+                                                <div style="width:auto;">
+                                                    <h6>Interview Performance</h6>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" aria-valuenow=${applicant.match} style="width: ${applicant.match}%;" aria-valuemin="0" aria-valuemax="100" >${applicant.match}%</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 17px;">
+                                        <div class="col" >
+                                            <h6>${applicant.skills }</h6>
+                                        </div>
+                                        <div  style="width:auto;" >
+                                        <button class="btn btn-primary expand-button"  onclick="handleAction(${selectedJobId}, ${applicant.id}, 'expand')">Expand</button>
+                                        </div>
+                                        <div  style="width:auto;" >
+                                            <button class="btn btn-primary expand-button"  onclick="handleAction(${selectedJobId}, ${applicant.id}, 'shortlist')">Mail</button>
+                                        </div>
+                                        <div  style="width:auto;" >
+                                            <button class="btn btn-primary expand-button"  onclick="handleAction(${selectedJobId}, ${applicant.id}, 'shortlist')">Shortlist</button>
+                                        </div>
+                                        <div  style="width:auto;" >
+                                            <button class="btn btn-primary expand-button"  onclick="handleAction(${selectedJobId}, ${applicant.id}, 'downloadresume')">Download Resume</button>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                          <div class="card-body">
+                            <div class="info-section" display="None">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6 class="mb-2">experiance:${applicant.exp }</h6>
+                                            </div>
+                                            <div class="col">
+                                                <h6 class=" mb-2">Post:${applicant.post }</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6 class=" mb-2">gender:${applicant.gender }</h6>
+                                            </div>
+                                            <div class="col">
+                                                <h6 class=" mb-2">age${applicant.dob }</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6 class=" mb-2">Address</h6>
+                                            </div>
+                                            <div class="col">
+                                                <h6 class=" mb-2">Add2</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6 class=" mb-2">Phone no 1 :${applicant.pho1 }</h6>
+                                            </div>
+                                            <div class="col">
+                                                <h6 class=" mb-2">Phone no 2 : ${applicant.pho2 }</h6>
+                                            </div>
+                                            <div class="col">
+                                                <h6 class=" mb-2">email : ${applicant.email }</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6 class=" mb-2">Education :${applicant.edu }</h6>
+                                            </div>
+                                            <div class="col">
+                                                <h6 class=" mb-2">Univercity :${applicant.uni }</h6>
+                                            </div>
+                                            <div class="col">
+                                                <h6 class=" mb-2">Marks :${applicant.per }</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6 class=" mb-2">interview Result :${applicant.interviewres }</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+                                ss.forEach((interview, index) => {
+                                    const accordionId = `accordion-${applicant.id}-${index}`;
+                                    applicantCardHTML += `
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="accordion" role="tablist" id="${accordionId}">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" role="tab"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#${accordionId} .item-1" aria-expanded="true" aria-controls="${accordionId} .item-1" style="border: 1px solid var(--bs-primary) ;border-top-style: solid;border-right-style: none;border-bottom-style: solid;border-left-style: none;"> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-question-mark">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M8 8a3.5 3 0 0 1 3.5 -3h1a3.5 3 0 0 1 3.5 3a3 3 0 0 1 -2 3a3 4 0 0 0 -2 4"></path>
+                                                            <line x1="12" y1="19" x2="12" y2="19.01"></line>
+                                                        </svg>Question by Ai ${interview.Question} </button></h2>
+                                                <div class="accordion-collapse collapse  item-1" role="tabpanel" data-bs-parent="#${accordionId}">
+                                                    <div class="accordion-body">
+                                                        <p class="mb-0" style="border: 1px solid var(--bs-yellow) ;border-top-style: solid;border-right-style: none;border-bottom-style: solid;border-left-style: none;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-thumb-up" style="font-size: 23px;margin-right: 8px;">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3"></path>
+                                                            </svg>Answer ${interview.Answer}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>`;});
+                        
+
+
+
+                    applicantList.insertAdjacentHTML('beforeend', applicantCardHTML);
+                });
+                filterButton.removeAttribute("disabled");
+                sortButton.removeAttribute("disabled");
+            }
+
+        });
+        
+        function handleAction(selectedJobId, applicantId, action) {
+            switch (action) {
+                case 'expand':
+                    $(".expand-button").click(function () {
+                        $(this).closest(".card").toggleClass("expanded");
+                    });
+                    break;
+                case 'mail':
+                    const mailUrl = `/recruiter/mail_candidate/${selectedJobId}/${applicantId}/`;
+            
+                    fetch(mailUrl, {
+                        method: 'GET', 
+                    })
+                    
+                    .catch(error => {
+                        // Handle network or other errors
+                        console.error('An error occurred:', error);
+                    });
+                    for (var prop in applicantsByJob) {
+                        // Check if the property value is an array
+                        if (Array.isArray(applicantsByJob[prop])) {
+                            
+                            // Filter out items based on conditions
+                            applicantsByJob[prop] = {
+                                {% for job in jobs %}
+                                    '{{ job.id }}': [
+                                        {% for applicant in job.interviewednts.all %}
+                                            {
+                                                id: '{{ applicant.id }}',
+                                                name: '{{ applicant.name }}',
+                                                match: '{{ applicant.match }}',
+                                                per: '{{ applicant.per }}',
+                                                ranking: '{{ applicant.match }}',
+                                                experiance: '{{ applicant.exp }}',
+                                                skills: '{{ applicant.skillstxt }}',
+                                                sklno:'{{applicant.skills}}',
+                                                resumetxt:' {{ applicant.resumetxt|truncate_and_replace:60000 }}',  <!-- Use the custom filter here -->
+                                                // Add other applicant attributes here
+                                            },
+                                        {% endfor %}
+                                    ],
+                                {% endfor %}
+                            };
+                            
+                        }
+                    }
+                    
+                    jobSelect.dispatchEvent(new Event('change'));
+                        break;
+                case 'shortlist':
+                    const shortlistUrl = `/recruiter/shortlist_candidate/${selectedJobId}/${applicantId}/`;
+            
+                    fetch(shortlistUrl, {
+                        method: 'GET', 
+                    })
+                    
+                    .catch(error => {
+                        // Handle network or other errors
+                        console.error('An error occurred:', error);
+                    });
+                    for (var prop in applicantsByJob) {
+                        // Check if the property value is an array
+                        if (Array.isArray(applicantsByJob[prop])) {
+                            
+                            // Filter out items based on conditions
+                            applicantsByJob[prop] = {
+                                {% for job in jobs %}
+                                    '{{ job.id }}': [
+                                        {% for applicant in job.interviewednts.all %}
+                                            {
+                                                id: '{{ applicant.id }}',
+                                                name: '{{ applicant.name }}',
+                                                match: '{{ applicant.match }}',
+                                                per: '{{ applicant.per }}',
+                                                ranking: '{{ applicant.match }}',
+                                                experiance: '{{ applicant.exp }}',
+                                                skills: '{{ applicant.skillstxt }}',
+                                                sklno:'{{applicant.skills}}',
+                                                resumetxt:' {{ applicant.resumetxt|truncate_and_replace:60000 }}',  <!-- Use the custom filter here -->
+                                                // Add other applicant attributes here
+                                            },
+                                        {% endfor %}
+                                    ],
+                                {% endfor %}
+                            };
+                            
+                        }
+                    }
+                    
+                    jobSelect.dispatchEvent(new Event('change'));
+                    break;
+                case 'downloadresume':
+                console.log('movedownload')
+                        const doennstUrl = `/recruiter/downloadresume_candidate/${selectedJobId}/${applicantId}/`;
+                
+                        fetch(doennstUrl, {
+                            method: 'GET', 
+                        })
+                        
+                        .catch(error => {
+                            // Handle network or other errors
+                            console.error('An error occurred:', error);
+                        });
+                        for (var prop in applicantsByJob) {
+                            // Check if the property value is an array
+                            if (Array.isArray(applicantsByJob[prop])) {
+                                
+                                // Filter out items based on conditions
+                                applicantsByJob[prop] = {
+                                    {% for job in jobs %}
+                                        '{{ job.id }}': [
+                                            {% for applicant in job.interviewednts.all %}
+                                                {
+                                                    id: '{{ applicant.id }}',
+                                                    name: '{{ applicant.name }}',
+                                                    match: '{{ applicant.match }}',
+                                                    per: '{{ applicant.per }}',
+                                                    ranking: '{{ applicant.match }}',
+                                                    experiance: '{{ applicant.exp }}',
+                                                    skills: '{{ applicant.skillstxt }}',
+                                                    sklno:'{{applicant.skills}}',
+                                                    resumetxt:' {{ applicant.resumetxt|truncate_and_replace:60000 }}',  <!-- Use the custom filter here -->
+                                                    // Add other applicant attributes here
+                                                },
+                                            {% endfor %}
+                                        ],
+                                    {% endfor %}
+                                };
+                                
+                            }
+                        }
+                        
+                        jobSelect.dispatchEvent(new Event('change'));
+                    break;
+                default:
+                    // Handle unknown action
+                    break;
+            }
+        }
+        
+        
+       
+        
+        
+        
+        
+        
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set the first job as selected by default
+            jobSelect.options[1].selected = true; // Use options[0] if you want the placeholder option
+            
+            // Trigger the change event to populate the applicant list
+            jobSelect.dispatchEvent(new Event('change'));
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{%static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
+    <script src="{%static 'assets/js/chart.min.js'%}"></script>
+    <script src="{%static 'assets/js/bs-init.js'%}"></script>
+    <script src="{%static 'assets/js/startup-modern.js'%}"></script>
+</body>
+
+</html>

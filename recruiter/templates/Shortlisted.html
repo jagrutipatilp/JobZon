@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Job Zon</title>
+    <link rel="stylesheet" href="{%static 'assets/bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+    <link rel="stylesheet" href="{%static 'assets/css/bs-theme-overrides.css'%}">
+    <link rel="stylesheet" href="{%static 'assets/css/Footer-Basic-icons.css'%}">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md fixed-top navbar-shrink py-3 navbar-light" id="mainNav">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span style="color: #97144d;font-weight: bold;">Job Zon</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="{%url 'indexr'%}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{%url 'Jobposting'%}">Job Posting</a></li>
+                    <li class="nav-item"><a class="nav-link " href="{%url 'ALlJobs'%}">Jobs</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{%url 'Shortlisted'%}">Shortlisted</a></li>
+                </ul><a class="btn btn-primary shadow" role="button" href="{%url 'index'%}">Log Out</a>
+            </div>
+        </div>
+    </nav>
+    <section style="margin-top: 95px;">
+        <div id="filterSortSection" style="z-index: 1000;">
+            <!-- Filter and Sort Section -->
+            <section class="sticky-top">
+                <div class="row" style="margin: 10px;">
+                    <!-- Filter and Sort buttons here... -->
+                    <!-- Search Box -->
+                    <div class="col">
+                        <input type="text" class="form-control" id="jobSearch" placeholder="Search for a job..." onkeyup="filterJobs()">
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+    
+    <div id="jobList">
+        <section class="py-5">
+            {% for job in jobs %}
+            <div class="card job-card" style="background: #ffe7e9; margin: 2%;">
+                <div class="" style="margin: 3%;">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                <h1 class="job-name" style="font-family: Alata, sans-serif;margin-left: 10px;font-weight: bold;">{{ job.jobname }}</h1>
+                            </div>
+                            
+                            <div class="col-4">
+                                <div class="row">
+                                    <div class="col text-end"><a href="{% url 'view_shortlisted' job.id %}" class="btn btn-primary">View ShortListed</a></div>
+                                    <div class="col-auto">                                        
+                                        <div class="text-end">
+                                            <a class="btn btn-primary" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-job-{{ job.id }}" href="#collapse-job-{{ job.id }}" role="button">
+                                                Show more
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% comment %} <div class="col-2 align-self-center">
+                                <div class="text-end">
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-job-{{ job.id }}" href="#collapse-job-{{ job.id }}" role="button">
+                                        Show more
+                                    </a>
+                                </div>
+                            </div> {% endcomment %}
+                        </div>
+                    </div>
+                    <div class="container-fluid collapse" id="collapse-job-{{ job.id }}">
+                        <div class="row">
+                            <div class="col-5">
+                                <ul class="list-unstyled">
+                                    <li>Opening&nbsp;:{{ job.openings }}</li>
+                                    <li>Experience: {{ job.creteria1 }}</li>
+                                    <li>Place: {{ job.place }}</li>
+                                    <li>Skills: {{ job.creteria1 }}, {{ job.creteria2 }}, {{ job.creteria3 }}, {{ job.creteria4 }}, {{ job.creteria5 }}</li>
+                                    <li>Type: {{ job.typ }}</li>
+                                    <li>Sector: {{ job.sector }}</li>
+                                </ul>
+                            </div>
+                            <div class="col">
+                                <p style="width: 100%;height: 100%;padding: 1px;text-align: left;">Description: {{ job.about }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                <h4 style="font-family: Alata, sans-serif;margin-left: 10px;font-weight: bold;">No of Applicants</h4>
+                            </div>
+                            <div class="col-4"><label class="col-form-label" style="font-weight: bold;">Label</label></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
+       
+    <script>
+        function filterJobs() {
+            let input = document.getElementById('jobSearch').value.toLowerCase();
+            let jobCards = document.getElementsByClassName('job-card');
+    
+            for (let i = 0; i < jobCards.length; i++) {
+                let jobName = jobCards[i].getElementsByClassName('job-name')[0].innerText.toLowerCase();
+                if (jobName.includes(input)) {
+                    jobCards[i].style.display = "";
+                } else {
+                    jobCards[i].style.display = "none";
+                }
+            }
+        }
+        const jobSelect = document.getElementById('jobSelect');
+        const dropdownItems = document.querySelectorAll('#dropsort .dropdown-item');    
+        const applicantList = document.getElementById('applicantList');
+        const filterButton = document.getElementById("filterDropdown");
+        const sortButton = document.getElementById("sortDropdown");
+        let selectedSortOption = '';
+        //var djangoValue = document.getElementById("valueFromDjango").textContent;
+        let filters = {};
+        let sortena = false;
+        
+        {% load custom_filters %}
+        const selectedJobId = jobSelect.value;
+        // Get a reference to the button element
+        const filterbutton = document.getElementById("applyFilterBtn");
+        let applicantsByJob = {
+            {% for job in jobs %}
+                '{{ job.id }}': [
+                    {% for applicant in job.applicants.all %}
+                        {
+                            id: '{{ applicant.id }}',
+                            name: '{{ applicant.name }}',
+                            match: '{{ applicant.match }}',
+                            per: '{{ applicant.per }}',
+                            ranking: '{{ applicant.match }}',
+                            experiance: '{{ applicant.exp }}',
+                            skills: '{{ applicant.skillstxt }}',
+                            sklno:'{{applicant.skills}}',
+                            resumetxt:' {{ applicant.resumetxt|truncate_and_replace:60000 }}',  <!-- Use the custom filter here -->
+                            // Add other applicant attributes here
+                        },
+                    {% endfor %}
+                ],
+            {% endfor %}
+        };
+        
+        const originalApplicantsByJob = JSON.parse(JSON.stringify(applicantsByJob));
+
+        // Add a click event listener
+       
+        filterbutton.addEventListener("click", function() {
+            // This code will be executed when the button is clicked
+           
+            applicantsByJob = JSON.parse(JSON.stringify(originalApplicantsByJob));
+            const experienceThreshold = experienceInput.value;
+            const criteriaKeywords = criteriaInput.value.toLowerCase().split(',').map(keyword => keyword.trim());
+            const skillsKeywords = skillsInput.value.toLowerCase().split(',').map(keyword => keyword.trim());
+            const selectedJobId = jobSelect.value;
+            
+            for (var prop in applicantsByJob) {
+                // Check if the property value is an array
+                if (Array.isArray(applicantsByJob[prop])) {
+                    
+                    // Filter out items based on conditions
+                    applicantsByJob[prop] = applicantsByJob[prop].filter(item =>item.experiance >= experienceThreshold && criteriaKeywords.some(keyword => item.resumetxt.includes(keyword)) && skillsKeywords.some(keyword => item.skills.includes(keyword)));
+                    
+                }
+            }
+            jobSelect.dispatchEvent(new Event('change'));
+            // You can add more code here to perform other actions
+        });
+        
+        // Sort applicants by ranking for each job
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function() {
+                sortena = true;
+                const selectedOption = item.innerText;
+                selectedSortOption = selectedOption;
+                if (selectedOption === 'marks') {
+                    for (const jobId in applicantsByJob) {
+                        if (applicantsByJob.hasOwnProperty(jobId)) {
+                            applicantsByJob[jobId].sort((a, b) => a.per - b.per);
+                        }
+                    }
+                    jobSelect.dispatchEvent(new Event('change'));
+                } else if (selectedOption === 'experience') {
+                    for (const jobId in applicantsByJob) {
+                        if (applicantsByJob.hasOwnProperty(jobId)) {
+                            applicantsByJob[jobId].sort((a, b) => a.experiance - b.experiance);
+                        }
+                    }
+                    jobSelect.dispatchEvent(new Event('change'));
+                } else if (selectedOption === 'skills') {
+                    for (const jobId in applicantsByJob) {
+                        if (applicantsByJob.hasOwnProperty(jobId)) {
+                            applicantsByJob[jobId].sort((a, b) => a.sklno.localeCompare(b.sklno));
+                        }
+                    }
+                    
+                    jobSelect.dispatchEvent(new Event('change'));
+                }  else if (selectedOption === 'name') {
+                    for (const jobId in applicantsByJob) {
+                        if (applicantsByJob.hasOwnProperty(jobId)) {
+                            applicantsByJob[jobId].sort((a, b) => a.name.localeCompare(b.name));
+                        }
+                    }
+                    
+                    jobSelect.dispatchEvent(new Event('change'));
+                } else if (selectedOption === 'ranking') {
+                    for (const jobId in applicantsByJob) {
+                        if (applicantsByJob.hasOwnProperty(jobId)) {
+                            applicantsByJob[jobId].sort((a, b) => a.ranking - b.ranking);
+                        }
+                    }
+                    jobSelect.dispatchEvent(new Event('change'));
+                }
+                
+                // Update the sorting flag
+               
+            });
+        });
+        
+        document.querySelector('#sortDropdown').addEventListener('click', function() {
+            const selectedOption = document.querySelector('#dropsort .dropdown-item.active');
+            if (selectedOption) {
+                sortena=true;
+            } 
+        });
+        if(sortena==false){
+            for (const jobId in applicantsByJob) {
+                if (applicantsByJob.hasOwnProperty(jobId)) {
+                    applicantsByJob[jobId].sort((a, b) => a.ranking - b.ranking);
+                }
+            }
+        }
+        
+        jobSelect.addEventListener('change', () => {
+            const selectedJobId = jobSelect.value;
+    
+            if (selectedJobId) {
+                const selectedApplicants = applicantsByJob[selectedJobId];
+                applicantList.innerHTML = '';
+                selectedApplicants.forEach(applicant => {
+                    var selectcd = jobSelect.value;
+                    const applicantCardHTML = `
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-xxl-1">
+                                    <div class="bs-icon-xl bs-icon-circle bs-icon-primary bs-icon my-4"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
+                                            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2-2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"></path>
+                                        </svg></div>
+                                </div>
+                                <div class="col align-self-center">
+                                    <h5><strong>${applicant.name}</strong></h5>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h6>CV Ranking</h6>
+                                            
+                                            <div class="progress">
+                                                <div class="progress-bar" aria-valuenow=${applicant.match} style="width: ${applicant.match}%;" aria-valuemin="0" aria-valuemax="100" >${applicant.match}%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 17px;">
+                                        <div class="col">
+                                            
+                                        <h6>Skills :${applicant.skills }</h6>
+                                            <!-- Add ranking info here -->
+                                        </div>
+                                        <div class="col"><button class="btn btn-primary" onclick="shortlistApplicant(${selectedJobId}, ${applicant.id})" type="button">Interview</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    applicantList.insertAdjacentHTML('beforeend', applicantCardHTML);
+                });
+                filterButton.removeAttribute("disabled");
+                sortButton.removeAttribute("disabled");
+            }
+
+        });
+        function shortlistApplicant(jobId, applicantId) {
+            // You can now use the jobId and applicantId parameters
+            // to perform actions or make API calls as needed
+            const shortlistUrl = `/recruiter/interView_candidate/${jobId}/${applicantId}/`;
+           
+            fetch(shortlistUrl, {
+                method: 'GET', 
+            })
+            
+            .catch(error => {
+                // Handle network or other errors
+                console.error('An error occurred:', error);
+            });
+            for (var prop in applicantsByJob) {
+                // Check if the property value is an array
+                if (Array.isArray(applicantsByJob[prop])) {
+                    
+                    // Filter out items based on conditions
+                    applicantsByJob[prop] = {
+                        {% for job in jobs %}
+                            '{{ job.id }}': [
+                                {% for applicant in job.applicants.all %}
+                                    {
+                                        id: '{{ applicant.id }}',
+                                        name: '{{ applicant.name }}',
+                                        match: '{{ applicant.match }}',
+                                        per: '{{ applicant.per }}',
+                                        ranking: '{{ applicant.match }}',
+                                        experiance: '{{ applicant.exp }}',
+                                        skills: '{{ applicant.skillstxt }}',
+                                        sklno:'{{applicant.skills}}',
+                                        resumetxt:' {{ applicant.resumetxt|truncate_and_replace:60000 }}',  <!-- Use the custom filter here -->
+                                        // Add other applicant attributes here
+                                    },
+                                {% endfor %}
+                            ],
+                        {% endfor %}
+                    };
+                    
+                }
+            }
+            
+            jobSelect.dispatchEvent(new Event('change'));
+        }
+        
+        
+        
+       
+        
+        
+        
+        
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set the first job as selected by default
+            jobSelect.options[1].selected = true; // Use options[0] if you want the placeholder option
+            
+            // Trigger the change event to populate the applicant list
+            jobSelect.dispatchEvent(new Event('change'));
+        });
+    </script>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{%static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
+    <script src="{%static 'assets/js/chart.min.js'%}"></script>
+    <script src="{%static 'assets/js/bs-init.js'%}"></script>
+    <script src="{%static 'assets/js/startup-modern.js'%}"></script>
+</body>
+
+</html>
