@@ -34,7 +34,6 @@ from django.core.files.storage import default_storage
 
 # from .tasks import addinterview
 import os
-os.environ["OPENAI_API_KEY"] = "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"
 
 
 from django.shortcuts import get_object_or_404, redirect
