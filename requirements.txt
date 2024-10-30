@@ -89,10 +89,6 @@ preshed==3.0.9
 prometheus_client==0.21.0
 prompt_toolkit==3.0.48
 protobuf==4.25.5
-psutil==6.1.0
-pure_eval==0.2.3
-pyarrow==17.0.0
-PyAudio==0.2.14
 pycparser==2.22
 pydantic==2.9.2
 pydantic_core==2.23.4
