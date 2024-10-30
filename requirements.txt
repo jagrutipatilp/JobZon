@@ -22,3 +22,4 @@ torch==2.4.1
 transformers==4.46.0
 kombu==5.4.2
 altair==4.2.2
+onnxruntime==1.19.2
