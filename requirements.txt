@@ -17,7 +17,6 @@ exif==1.0.0
 ExifRead==3.0.0
 fastjsonschema==2.20.0
 
-
 google-pasta==0.2.0
 googletrans==4.0.0rc1
 groq==0.11.0
