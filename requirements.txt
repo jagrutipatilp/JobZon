@@ -1,7 +1,6 @@
 
 altair==4.2.2
 
-audio-recorder-streamlit==0.0.10
 audioread==3.0.1
 beautifulsoup4==4.12.3
 bert-extractive-summarizer==0.10.1
