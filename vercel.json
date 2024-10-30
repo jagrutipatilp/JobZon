@@ -1,10 +1,9 @@
 {
-    "version": 2,
     "builds": [
       {
-        "src": "<jobzon>/wsgi.py",
+        "src": "jobzon/wsgi.py",
         "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
+        "config": { "maxLambdaSize": "15mb", "runtime": "python3.12.7" }
       },
       {
         "src": "build_files.sh",
@@ -21,7 +20,7 @@
       },
       {
         "src": "/(.*)",
-        "dest": "<jobzon>/wsgi.py"
+        "dest": "jobzon/wsgi.py"
       }
     ]
   }
