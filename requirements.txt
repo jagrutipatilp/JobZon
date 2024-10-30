@@ -31,8 +31,6 @@ huggingface-hub==0.25.1
 
 inflect==7.4.0
 
-jax==0.4.34
-jaxlib==0.4.34
 
 Jinja2==3.1.4
 joblib==1.4.2
