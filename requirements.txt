@@ -82,7 +82,6 @@ packaging==24.1
 pandas==2.2.3
 pandocfilters==1.5.1
 parso==0.8.4
-pillow==11.0.0
 platformdirs==4.3.6
 plum-py==0.3.1
 pooch==1.8.2
